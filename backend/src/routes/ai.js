@@ -1,0 +1,10 @@
+const r = require('express').Router();
+const c = require('../controllers/aiController');
+const { protect } = require('../middleware/auth');
+r.use(protect);
+r.post('/summary', c.generateSummary);
+r.post('/bullets', c.generateBullets);
+r.post('/skills', c.suggestSkills);
+r.post('/ats-check', c.atsCheck);
+r.post('/cover-letter', c.generateCoverLetter);
+module.exports = r;
