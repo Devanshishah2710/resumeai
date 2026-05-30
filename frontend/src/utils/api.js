@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api', headers: { 'Content-Type': 'application/json' }, timeout: 30000 });
+const API_BASE = process.env.REACT_APP_API_URL || 'https://resumeai-b3p4.onrender.com/api';
+
+const api = axios.create({ baseURL: API_BASE, headers: { 'Content-Type': 'application/json' }, timeout: 30000 });
 
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('accessToken');
@@ -17,7 +19,7 @@ api.interceptors.response.use(r => r, async error => {
     if (isRefreshing) return new Promise((res, rej) => failedQueue.push({ resolve: res, reject: rej })).then(t => { orig.headers.Authorization = `Bearer ${t}`; return api(orig); });
     orig._retry = true; isRefreshing = true;
     try {
-      const { data } = await axios.post('/api/auth/refresh', { refreshToken: localStorage.getItem('refreshToken') });
+      const { data } = await axios.post(`${API_BASE}/auth/refresh`, { refreshToken: localStorage.getItem('refreshToken') });
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       processQueue(null, data.accessToken);
