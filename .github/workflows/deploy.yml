@@ -7,14 +7,12 @@ on:
     branches: [main]
 
 jobs:
-  # ── Backend Tests ────────────────────────────────────────
   backend:
     name: Backend
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,23 +20,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Lint check
-        run: node --check src/server.js && echo "✅ Syntax OK"
+      - name: Syntax check
+        run: node --check src/server.js && echo "Backend syntax OK"
 
-  # ── Frontend Build ───────────────────────────────────────
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
-
     steps:
       - uses: actions/checkout@v4
 
@@ -46,16 +40,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build
         run: npm run build
         env:
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          REACT_APP_API_URL: https://resumeai-b3p4.onrender.com/api
           CI: false
 
       - name: Upload build artifact
@@ -65,13 +57,11 @@ jobs:
           path: frontend/build/
           retention-days: 1
 
-  # ── Deploy to Render (backend) ───────────────────────────
   deploy-backend:
     name: Deploy Backend
     needs: [backend, frontend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-
     steps:
       - name: Trigger Render deploy
         run: |
@@ -81,13 +71,11 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{}'
 
-  # ── Deploy to Vercel (frontend) ──────────────────────────
   deploy-frontend:
     name: Deploy Frontend
     needs: [backend, frontend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-
     steps:
       - uses: actions/checkout@v4
 
