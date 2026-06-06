@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./utils/database');
+const path = require('path');
 const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
@@ -25,6 +26,9 @@ app.use('/api/templates', require('./routes/templates'));
 app.use('/api/ai',        require('./routes/ai'));
 app.use('/api/pdf',       require('./routes/pdf'));
 app.use('/api/users',     require('./routes/users'));
+
+app.use('/samples', express.static(path.join(__dirname, '../public/samples')));
+app.use('/api/samples', require('./routes/samples'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', env: process.env.NODE_ENV }));
 app.use('*', (req, res) => res.status(404).json({ error: `${req.originalUrl} not found` }));
