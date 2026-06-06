@@ -18,7 +18,7 @@ export default function Navbar() {
   const handleLogout = async () => { await logout(); toast.success('Logged out'); navigate('/'); };
   const isActive = p => location.pathname === p;
   const navLinks = isAuthenticated
-    ? [{ to:'/dashboard', label:'Dashboard' }, { to:'/templates', label:'Templates' }, { to:'/builder', label:'Builder' }]
+    ? [{ to:'/dashboard', label:'Dashboard' }, { to:'/templates', label:'Templates' }, { to:'/builder', label:'Builder' },{ to:'/samples', label:'Samples' }]
     : [{ to:'/templates', label:'Templates' }];
 
   return (
