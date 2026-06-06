@@ -6,6 +6,7 @@ import { ResumeProvider } from './context/ResumeContext';
 import './styles/globals.css';
 
 import HomePage from './pages/HomePage';
+import SamplesPage from './pages/SamplesPage';
 import AuthPage from './pages/AuthPage';
 import DashboardPage from './pages/DashboardPage';
 import BuilderPage from './pages/BuilderPage';
@@ -29,6 +30,7 @@ function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<PublicRoute><AuthPage /></PublicRoute>} />
       <Route path="/templates" element={<TemplatesPage />} />
+      <Route path="/samples" element={<SamplesPage />} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
       <Route path="/builder" element={<ProtectedRoute><BuilderPage /></ProtectedRoute>} />
       <Route path="/builder/:resumeId" element={<ProtectedRoute><BuilderPage /></ProtectedRoute>} />
