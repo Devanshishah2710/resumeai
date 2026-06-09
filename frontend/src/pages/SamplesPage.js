@@ -21,8 +21,8 @@ export default function SamplesPage() {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API = process.env.REACT_APP_API_URL || 'https://resumeai-b3p4.onrender.com/api';
-
+  const API = (process.env.REACT_APP_API_URL || 'https://resumeai-b3p4.onrender.com/api').replace(/\/$/, '');
+  
   useEffect(() => {
     const url = filter === 'all' ? `${API}/samples` : `${API}/samples?category=${filter}`;
     fetch(url).then(r => r.json()).then(d => setSamples(d.samples || [])).finally(() => setLoading(false));
