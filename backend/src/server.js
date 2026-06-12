@@ -16,7 +16,12 @@ app.set('trust proxy', 1);
 connectDB();
 
 // ── Security ──────────────────────────────────────────────────────────────────
-app.use(helmet({ contentSecurityPolicy: false, frameguard: false }));
+app.use(helmet({
+  contentSecurityPolicy: false,
+  frameguard: false,
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
+}));
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -51,13 +56,13 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
 // ── API Routes ────────────────────────────────────────────────────────────────
-app.use('/api/auth',      require('./routes/auth'));
-app.use('/api/resumes',   require('./routes/resumes'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/resumes', require('./routes/resumes'));
 app.use('/api/templates', require('./routes/templates'));
-app.use('/api/ai',        require('./routes/ai'));
-app.use('/api/pdf',       require('./routes/pdf'));
-app.use('/api/users',     require('./routes/users'));
-app.use('/api/samples',   require('./routes/samples'));   // ← sample PDFs
+app.use('/api/ai', require('./routes/ai'));
+app.use('/api/pdf', require('./routes/pdf'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/samples', require('./routes/samples'));   // ← sample PDFs
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
