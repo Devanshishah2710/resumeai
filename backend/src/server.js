@@ -79,10 +79,10 @@ app.use(errorHandler);
 // ── Start ─────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`\n🚀 ResumeAI API  →  http://localhost:${PORT}`);
-  console.log(`📦 MongoDB       →  ${process.env.MONGODB_URI?.split('@')[1] || 'local'}`);
-  console.log(`🌐 Frontend      →  ${process.env.FRONTEND_URL}`);
-  console.log(`📄 Samples       →  http://localhost:${PORT}/api/samples\n`);
+  console.log(`🚀 ResumeAI API running on port ${PORT}`);
+  console.log(`📦 MongoDB connected`);
+  console.log(`🌐 Frontend: ${process.env.FRONTEND_URL}`);
+  console.log(`📄 Samples API ready at /api/samples`);
 });
 
 module.exports = app;
