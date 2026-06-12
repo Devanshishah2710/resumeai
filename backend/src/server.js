@@ -16,7 +16,7 @@ app.set('trust proxy', 1);
 connectDB();
 
 // ── Security ──────────────────────────────────────────────────────────────────
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({ contentSecurityPolicy: false, frameguard: false }));
 
 app.use(cors({
   origin: (origin, callback) => {
