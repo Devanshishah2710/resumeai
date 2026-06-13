@@ -374,15 +374,22 @@ export default function TemplatesPage() {
     return true;
   };
 
-  // Load sample into builder and go to editor
+  // Load sample data into ResumeContext then open builder
+  // Pass { fromSample: true } via location.state so builder knows
+  // to use context data instead of resetting or reading URL params
   const handleEditSample = (sample) => {
     if (!requireAuth()) return;
-    loadResume(sample.resumeData);
+    loadResume({
+      ...sample.resumeData,
+      // ensure template color from the sample is applied to live preview
+      template:      sample.resumeData.template      || 'modern',
+      templateColor: sample.resumeData.templateColor || '#3B82F6',
+    });
     toast.success(`✏️ "${sample.name}" loaded — start editing!`, { duration: 3000 });
-    navigate('/builder');
+    navigate('/builder', { state: { fromSample: true } });
   };
 
-  // Start blank from design template
+  // Start blank from design template (unchanged)
   const handleSelectDesign = (template) => {
     if (!requireAuth()) return;
     navigate(`/builder?template=${template.id}&color=${encodeURIComponent(template.color)}`);
